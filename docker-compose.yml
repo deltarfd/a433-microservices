@@ -1,0 +1,31 @@
+# Specify the version of the Docker Compose file.
+version: '2'
+
+# Define the services that make up your application.
+services:
+  # Configuration for the 'item-app' service.
+  item-app:
+    # Use the specified Docker image from the container registry.
+    image: ghcr.io/deltarfd/item-app:v1
+    # Map port 80 on the host to port 8080 in the container.
+    ports:
+      - "80:8080"
+    # Specify that this service depends on the 'item-db' service.
+    depends_on:
+      - item-db
+    # Ensure that the service restarts automatically in case of failure.
+    restart: always
+
+  # Configuration for the 'item-db' service.
+  item-db:
+    # Use the official MongoDB version 3 image from the Docker Hub.
+    image: mongo:3
+    # Mount a volume to persist the MongoDB data outside the container.
+    volumes:
+      - app-db:/data/db
+    # Ensure that the service restarts automatically in case of failure.
+    restart: always
+
+# Define named volumes. In this case, 'app-db' is used for persisting MongoDB data.
+volumes:
+  app-db:

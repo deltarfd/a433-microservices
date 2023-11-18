@@ -1,0 +1,20 @@
+[+] Building 0.0s (0/0)                                                                                                                                                                                     docker:desktop-linux
+[+] Running 1/0
+ ✔ Container a433-microservices-item-db-1  Running                                                                                                                                                                          0.0s 
+Attaching to a433-microservices-item-app-1, a433-microservices-item-db-1
+a433-microservices-item-app-1  | 
+a433-microservices-item-app-1  | > docker-software-delivery@1.0.0 start /app
+a433-microservices-item-app-1  | > node ./bin/www
+a433-microservices-item-app-1  | 
+a433-microservices-item-app-1  | NODE_ENV: production
+a433-microservices-item-db-1   | 2023-11-11T13:32:12.156+0000 I NETWORK  [listener] connection accepted from 172.18.0.3:59192 #1 (1 connection now open)
+a433-microservices-item-db-1   | 2023-11-11T13:32:12.162+0000 I NETWORK  [conn1] received client metadata from 172.18.0.3:59192 conn1: { driver: { name: "nodejs", version: "2.2.36" }, os: { type: "Linux", name: "linux", architecture: "arm64", version: "6.4.16-linuxkit" }, platform: "Node.js v14.21.3, LE, mongodb-core: 2.1.20" }
+a433-microservices-item-app-1  | Connected to database
+a433-microservices-item-app-1  | GET / 200 107.521 ms - 785
+a433-microservices-item-app-1  | GET /javascripts/dist/dist.min.js 200 8.700 ms - 186999
+a433-microservices-item-app-1  | GET /stylesheets/style.css 200 15.681 ms - 519
+a433-microservices-item-app-1  | GET /api 200 3.247 ms - 2
+a433-microservices-item-app-1  | GET /favicon.ico 404 5.201 ms - 270
+a433-microservices-item-db-1   | 2023-11-11T13:33:19.371+0000 I STORAGE  [conn1] createCollection: accumulator.documents with generated UUID: 42896e5a-8ae0-4322-8b87-11f146388922
+a433-microservices-item-app-1  | POST /api 201 37.336 ms - 51
+a433-microservices-item-app-1  | POST /api 201 10.099 ms - 55
