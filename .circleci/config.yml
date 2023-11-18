@@ -1,0 +1,55 @@
+version: 2.1
+
+jobs:
+  # Job to lint the Dockerfile using hadolint
+  lint-dockerfile:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          # Pulls the hadolint Docker image and uses it to lint the Dockerfile
+          name: Lint Dockerfile
+          command: sudo docker pull ghcr.io/hadolint/hadolint < Dockerfile
+
+  # Job to run unit tests for the Go application
+  test-app:
+    docker:
+      - image: cimg/go:1.20.11
+    steps:
+      - checkout
+      - run:
+          # Checks out the code and runs unit tests for the Go application
+          name: Run Unit Tests
+          command: go test -v -short --count=1 $(go list ./...)
+
+  # Job to build a Docker image from the Dockerfile, login to a container registry, and push the image
+  build-app-karsajobs:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          # Builds a Docker image from the Dockerfile in the current directory
+          name: Build a Docker image
+          command: docker build -t ghcr.io/$DOCKERHUB_USERNAME/karsajobs:latest .
+      - run:
+          # Logs into the container registry using the specified username and personal access token
+          name: Docker login to container registry
+          command: echo $CR_PAT | docker login -u $DOCKERHUB_USERNAME --password-stdin ghcr.io
+      - run:
+          # Pushes the built Docker image to the container registry
+          name: Push the Docker image to the container registry
+          command: docker push ghcr.io/$DOCKERHUB_USERNAME/karsajobs:latest
+
+workflows:
+  version: 2
+  # Workflow that includes linting, testing, and building jobs
+  lint-test-and-build-karsajobs:
+    # Defines a workflow that sequentially executes linting, testing, and building jobs
+    jobs:
+      - lint-dockerfile
+      - test-app
+      - build-app-karsajobs
