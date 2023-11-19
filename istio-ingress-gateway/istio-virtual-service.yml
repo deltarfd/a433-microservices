@@ -1,24 +1,26 @@
+# Define the Istio VirtualService resource
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: istio-virtual-service
+  name: istio-virtual-service # Name of the VirtualService resource
+# Specify the configuration for the VirtualService
 spec:
   hosts:
-  - "*"
+  - "*" # Match requests for any host
   gateways:
-  - istio-gateway
+  - istio-gateway # Associate the VirtualService with the istio-gateway
   http:
   - match:
     - uri:
-        exact: /order
+        exact: /order  # Match requests with the exact URI "/order"
     - uri:
-        exact: /shipping
+        exact: /shipping  # Match requests with the exact URI "/shipping"
   - route:
     - destination:
-        host: order-service
+        host: order-service # Forward matched requests to the "order-service" host
         port:
-          number: 3000
+          number: 3000  # Specify the port for the "order-service"
     - destination:
-        host: shipping-service
+        host: shipping-service  # Forward matched requests to the "shipping-service" host
         port:
-          number: 3001
+          number: 3001   # Specify the port for the "shipping-service"

@@ -1,14 +1,15 @@
+# Istio Gateway configuration
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: istio-gateway
+  name: istio-gateway # Name of the Istio Gateway
 spec:
   selector:
-    istio: ingressgateway
+    istio: ingressgateway # Selectors to determine which pods will serve as the gateway
   servers:
   - port:
-      number: 80
-      name: http
-      protocol: HTTP
+      number: 80  # Specify the port number for the gateway
+      name: http   # Name of the port
+      protocol: HTTP  # Specify the protocol as HTTP
     hosts:
-    - "*"
+    - "*" # Allow traffic for any host
