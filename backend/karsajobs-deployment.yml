@@ -1,0 +1,44 @@
+# Define the Kubernetes API version and the kind of resource being created (Deployment)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Metadata for the Deployment
+  name: karsajobs
+  labels:
+    app: karsajobs
+    tier: backend
+spec:
+  # Specification for the Deployment
+  selector:
+    matchLabels:
+      app: karsajobs
+      tier: backend
+  replicas: 1 # Number of desired replicas
+  template:
+      # Template for creating Pods
+      metadata:
+        labels:
+          app: karsajobs
+          tier: backend   
+      spec:
+        # Specification for the Pod
+        containers:
+        - name: karsajobs
+          image: ghcr.io/deltarfd/karsajobs:latest # Docker image to be used for the container
+          ports:
+          - containerPort: 8080 # Port to expose on the container
+          env:
+            - name: APP_PORT
+              value: "8080" # Environment variable for the application port
+            - name: MONGO_HOST
+              value: mongo-service  # Environment variable for MongoDB host
+            - name: MONGO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret   # Name of the Secret resource
+                  key: MONGO_ROOT_USERNAME # Key in the Secret containing MongoDB username
+            - name: MONGO_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret  # Name of the Secret resource
+                  key: MONGO_ROOT_PASSWORD  # Key in the Secret containing MongoDB password

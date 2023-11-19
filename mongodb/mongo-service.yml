@@ -1,0 +1,12 @@
+# Define the Kubernetes API version and the kind of resource being created (Service)
+apiVersion: v1
+kind: Service
+metadata:
+  # Metadata for the Service
+  name: mongo-service
+spec:
+  # Specification for the Service  
+  selector:
+    app: mongo  # Match Pods with the label 'app: mongo'
+  ports:
+  - port: 27017 # Port on the Service

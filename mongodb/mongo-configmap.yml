@@ -1,0 +1,14 @@
+# Define the Kubernetes API version and the kind of resource being created (ConfigMap)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  # Metadata for the ConfigMap
+  name: mongo-configmap
+  labels:
+    app: mongodb    # Label indicating the application associated with this ConfigMap
+    tier: database  # Label indicating the tier or role of the application
+
+data:
+  mongo.conf: | # Data field specifying the content of the ConfigMap
+    storage:
+      dbPath:/data/db 

@@ -1,0 +1,33 @@
+# Define the Kubernetes API version and the kind of resource being created (PersistentVolume)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  # Metadata for the PersistentVolume
+  name: mongo-pv
+  labels:
+    app: mongodb     # Label indicating the application associated with this PersistentVolume
+    tier: database   # Label indicating the tier or role of the application
+spec:
+  capacity:
+    storage: 1Gi     # Storage capacity of the PersistentVolume
+  accessModes:
+    - ReadWriteOnce  # Access mode for the PersistentVolume
+  storageClassName: manual  # Storage class name for dynamic provisioning
+  hostPath:
+    path: "/mnt/data/mongo" # Host path where the PersistentVolume data is stored
+---
+# Define the Kubernetes API version and the kind of resource being created (PersistentVolumeClaim)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  # Metadata for the PersistentVolumeClaim
+  name: mongo-pvc
+  labels:
+    app: mongodb    # Label indicating the application associated with this PersistentVolumeClaim
+    tier: database  # Label indicating the tier or role of the application
+spec:
+  resources:
+    requests:
+      storage: 1Gi   # Requested storage capacity for the PersistentVolumeClaim
+  accessModes:
+    - ReadWriteOnce # Access mode for the PersistentVolumeClaim

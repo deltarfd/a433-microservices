@@ -1,0 +1,51 @@
+# Define the Kubernetes API version and the kind of resource being created (StatefulSet)
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  # Metadata for the StatefulSet
+  name: mongo-statefulset
+spec:
+  serviceName: mongo  # Name of the associated headless service for the StatefulSet
+  selector:
+    matchLabels:
+      app: mongo  # Match Pods with the label 'app: mongo'
+  replicas: 1 # Number of desired replicas
+  minReadySeconds: 10 # Minimum number of seconds for a new Pod to be considered ready
+  template:
+    # Template for creating Pods
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      # Specification for the Pod
+      containers:
+      - name: mongodb
+        image: mongo:latest # Docker image to be used for the container
+        ports:
+          - containerPort: 27017  # Port to expose on the container
+            name: default-port
+        volumeMounts:
+          - name: mongo-config
+            mountPath: /config   # Mount path for the ConfigMap volume
+          - name: mongo-secret
+            mountPath: /etc/mongo-credentials # Mount path for the Secret volume
+            readOnly: true
+          - name: mongo-data
+            mountPath: /data/db # Mount path for the PersistentVolumeClaim volume
+            readOnly: true
+        env:
+          - name: MONGO_INITDB_ROOT_USERNAME_FILE
+            value: /etc/mongo-credentials/MONGO_ROOT_USERNAME # File path for the MongoDB root username
+          - name: MONGO_INITDB_ROOT_PASSWORD_FILE
+            value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD # File path for the MongoDB root password
+      volumes:
+        - name: mongo-config
+          configMap:
+            name: mongo-configmap # Name of the ConfigMap resource
+        - name: mongo-secret
+          secret:
+            secretName: mongo-secret  # Name of the Secret resource
+        - name: mongo-data
+          persistentVolumeClaim:
+            claimName: mongo-pvc  # Name of the PersistentVolumeClaim resource
+        

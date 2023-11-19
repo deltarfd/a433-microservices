@@ -1,0 +1,13 @@
+# Define the Kubernetes API version and the kind of resource being created (Service)
+apiVersion: v1
+kind: Service
+metadata:
+  # Metadata for the Service
+  name: karsajobs-ui-service
+spec:
+  # Specification for the Service
+  selector:
+    app: karsajobs  # Match Pods with the label 'app: karsajobs'
+    type: frontend  # Match Pods with the label 'type: frontend'
+  ports:
+  - port: 8000  # Port on the Service

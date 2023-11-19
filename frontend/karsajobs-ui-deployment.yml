@@ -1,0 +1,29 @@
+# Define the Kubernetes API version and the kind of resource being created (Deployment)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Metadata for the Deployment
+  name: karsajobs-ui
+  labels:
+    app: karsajobs
+    tier: frontend
+spec:
+  # Specification for the Deployment
+  selector:
+    matchLabels:
+      app: karsajobs
+      tier: frontend
+  replicas: 1 # Number of desired replicas
+  template:
+      # Template for creating Pods
+      metadata:
+        labels:
+          app: karsajobs
+          tier: frontend   
+      spec:
+        # Specification for the Pod      
+        containers:
+        - name: karsajobs-ui
+          image: ghcr.io/deltarfd/karsajobs-ui:latest # Docker image to be used for the container
+          ports:
+          - containerPort: 8000 # Port to expose on the container
