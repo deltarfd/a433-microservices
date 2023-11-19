@@ -1,0 +1,13 @@
+# Define the Kubernetes API version and the kind of resource being created (Service)
+apiVersion: v1
+kind: Service
+metadata:
+  # Metadata for the Service
+  name: shipping-service
+spec:
+  # Specification for the Service
+  selector:
+    app: shipping  # Match Pods with the label 'app: shipping'
+  ports:
+  - name: http-shipping  # Gives a name to the port for better identification.
+    port: 3001           # Port on the Service

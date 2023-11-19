@@ -1,0 +1,37 @@
+# Define the Kubernetes API version and the kind of resource being created (Deployment)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Name of the Deployment
+  name: order
+  # Labels for identifying and selecting the Deployment
+  labels:
+    app: order
+spec:
+  # Number of desired replicas for the application
+  replicas: 1
+  # Selector for Pods associated with this Deployment
+  selector:
+    matchLabels:
+      app: order
+  # Template for creating Pods
+  template:
+    metadata:
+      # Labels for Pods created by this template
+      labels:
+        app: order
+    spec:
+      # Containers running in the Pod
+      containers:
+      - name: order
+        # Docker image to be used for the container
+        image: ghcr.io/deltarfd/order-service:latest
+        # Port to expose on the container
+        ports:
+        - containerPort: 3000
+        # Environment variables for the application
+        env:
+        - name: PORT
+          value: "3000"
+        - name: AMQP_URL
+          value: "amqp://rabbitmq.rabbit.svc.cluster.local:5672"

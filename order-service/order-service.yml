@@ -1,0 +1,13 @@
+# Define the Kubernetes API version and the kind of resource being created (Service)
+apiVersion: v1
+kind: Service
+metadata:
+  # Metadata for the Service
+  name: order-service
+spec:
+  # Specification for the Service
+  selector:
+    app: order  # Match Pods with the label 'app: order'
+  ports:
+  - name: http-order  # Gives a name to the port for better identification.
+    port: 3000        # Port on the Service
