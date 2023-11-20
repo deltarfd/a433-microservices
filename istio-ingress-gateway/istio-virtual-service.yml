@@ -13,14 +13,16 @@ spec:
   - match:
     - uri:
         exact: /order  # Match requests with the exact URI "/order"
+    route:
+    - destination:
+        host: order-service
+        port:
+          number: 3000
+  - match:
     - uri:
         exact: /shipping  # Match requests with the exact URI "/shipping"
-  - route:
+    route:
     - destination:
-        host: order-service # Forward matched requests to the "order-service" host
+        host: shipping-service
         port:
-          number: 3000  # Specify the port for the "order-service"
-    - destination:
-        host: shipping-service  # Forward matched requests to the "shipping-service" host
-        port:
-          number: 3001   # Specify the port for the "shipping-service"
+          number: 3001
