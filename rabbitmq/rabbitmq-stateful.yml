@@ -1,0 +1,48 @@
+# Define a StatefulSet for RabbitMQ using API version "apps/v1"
+apiVersion: apps/v1
+kind: StatefulSet
+
+# Metadata for the StatefulSet, including its name
+metadata:
+  name: rabbitmq
+
+# Specification for the StatefulSet, defining its properties
+spec:
+  # ServiceName is the name of the Service that governs this StatefulSet
+  serviceName: rabbitmq-service 
+
+  # Number of replicas (Pods) to create
+  replicas: 1  
+
+  # Selector to match Pods that should be controlled by this StatefulSet
+  selector:
+    matchLabels:
+      app: rabbitmq
+
+  # Template for the Pods controlled by this StatefulSet
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:3.11-management
+          ports:
+            - name: amqp
+              containerPort: 5672
+            - name: management
+              containerPort: 15672
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/rabbitmq
+
+  # VolumeClaimTemplates define the persistent storage requirements for Pods
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]  # Access mode for the volume
+        resources:
+          requests:
+            storage: 10Gi  # Requested storage size for each Pod
